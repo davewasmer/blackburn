@@ -59,7 +59,7 @@ describe('blackburn.Serializer', function() {
       },
       category: {
         kind: 'hasOne',
-        type: 'cateogy'
+        type: 'category'
       }
     };
 
