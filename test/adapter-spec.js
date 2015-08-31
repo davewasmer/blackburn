@@ -22,53 +22,43 @@ export default function(adapter, fixtures) {
     });
   });
 
-  describe('attributesForRecord', function() {
+  describe('attributeFromRecord', function() {
     it('should return the attributes for a record', function() {
-      let attributes = adapter.attributesForRecord(fixtures.basicModelInstance, fixtures.basicModelInstanceOptions);
+      let title = adapter.attributeFromRecord(fixtures.basicModelInstance, 'title');
 
-      expect(attributes).to.have.keys([ 'title', 'year' ]);
-      expect(attributes.title).to.equal('Human Action');
-      expect(attributes.year).to.equal(1949);
+      expect(title).to.equal('Human Action');
     });
   });
 
-  describe('relationshipsForRecord', function() {
-    it('should return the relationships keyed by their name', function() {
-      let relationships = adapter.relationshipsForRecord(fixtures.modelWithRelationships, fixtures.modelWithRelationshipsOptions);
+  describe('relationshipFromRecord', function() {
+    it('should include the type for a relationship', function() {
+      let reviews = adapter.relationshipFromRecord(fixtures.modelWithRelationships, 'reviews', { strategy: 'ids' });
 
-      expect(relationships).to.have.keys([ 'reviews', 'author', 'comments', 'category' ]);
-    });
-    it('should include the type for each relationship', function() {
-      let relationships = adapter.relationshipsForRecord(fixtures.modelWithRelationships, fixtures.modelWithRelationshipsOptions);
-
-      expect(relationships.reviews.type).to.be('reviews');
-      expect(relationships.comments.type).to.be('comments');
-      expect(relationships.author.type).to.be('users');
-      expect(relationships.category.type).to.be('categories');
+      expect(reviews.type).to.be('reviews');
     });
     it('should include the kind for each relationship', function() {
-      let relationships = adapter.relationshipsForRecord(fixtures.modelWithRelationships, fixtures.modelWithRelationshipsOptions);
+      let relationship = adapter.relationshipFromRecord(fixtures.modelWithRelationships, fixtures.modelWithRelationshipsOptions);
 
-      expect(relationships.reviews.kind).to.be('hasMany');
-      expect(relationships.comments.kind).to.be('hasMany');
-      expect(relationships.author.kind).to.be('hasOne');
-      expect(relationships.category.kind).to.be('hasOne');
+      expect(relationship.reviews.kind).to.be('hasMany');
+      expect(relationship.comments.kind).to.be('hasMany');
+      expect(relationship.author.kind).to.be('hasOne');
+      expect(relationship.category.kind).to.be('hasOne');
     });
     it('should include the ids for each relationship that has records available', function() {
-      let relationships = adapter.relationshipsForRecord(fixtures.modelWithRelatedIds, fixtures.modelWithRelatedIdsOptions);
+      let relationship = adapter.relationshipFromRecord(fixtures.modelWithRelatedIds, fixtures.modelWithRelatedIdsOptions);
 
-      expect(relationships.reviews.ids).to.eql([ 1, 2, 3 ]);
-      expect(relationships.comments.ids).to.be.undefined();
-      expect(relationships.author.id).to.eql(1);
-      expect(relationships.category.id).to.be.undefined();
+      expect(relationship.reviews.ids).to.eql([ 1, 2, 3 ]);
+      expect(relationship.comments.ids).to.be.undefined();
+      expect(relationship.author.id).to.eql(1);
+      expect(relationship.category.id).to.be.undefined();
     });
     it('should include the records for each relationship that has records available', function() {
-      let relationships = adapter.relationshipsForRecord(fixtures.modelWithRelatedRecords, fixtures.modelWithRelatedRecordsOptions);
+      let relationship = adapter.relationshipFromRecord(fixtures.modelWithRelatedRecords, fixtures.modelWithRelatedRecordsOptions);
 
-      expect(relationships.reviews.records).to.eql([ { id: 1, text: 'one' }, { id: 2, text: 'two' }, { id: 3, text: 'three' } ]);
-      expect(relationships.comments.records).to.be.undefined();
-      expect(relationships.author.record).to.eql({ id: 1, name: 'one' });
-      expect(relationships.category.record).to.be.undefined();
+      expect(relationship.reviews.records).to.eql([ { id: 1, text: 'one' }, { id: 2, text: 'two' }, { id: 3, text: 'three' } ]);
+      expect(relationship.comments.records).to.be.undefined();
+      expect(relationship.author.record).to.eql({ id: 1, name: 'one' });
+      expect(relationship.category.record).to.be.undefined();
     });
   });
 

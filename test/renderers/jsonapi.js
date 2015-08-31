@@ -120,22 +120,29 @@ describe('JSONAPIRenderer', function() {
     };
     let payload = this.renderer.render(record, options);
 
-    expect(payload).to.eql({
-      data: {
-        type: 'books',
-        id: 1,
-        attributes: {
-          title: 'Human Action'
-        },
-        relationships: {
-          category: {
-            data: {
-              type: 'categories',
-              id: 2
-            }
-          }
-        }
+    expect(payload.data.relationships.category.data).to.eql({
+      type: 'categories',
+      id: 2
+    });
+  });
+
+  it('should render related links', function() {
+    let record = {
+      id: 1,
+      title: 'Human Action',
+      category_id: 2
+    };
+    let options = {
+      type: 'books',
+      relatedTypes: {
+        category: 'categories'
       }
+    };
+    let payload = this.renderer.render(record, options);
+
+    expect(payload.data.relationships.category.links).to.eql({
+      type: 'categories',
+      id: 2
     });
   });
 

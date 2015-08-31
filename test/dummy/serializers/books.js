@@ -6,6 +6,7 @@ export default Serializer.extend({
 
   relationships: {
     author: {
+      type: 'user',
       strategy: 'include'
     },
     category: {
