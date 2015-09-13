@@ -1,0 +1,371 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Serializer | blackburn</title>
+          <base href="/blackburn/">
+        <meta name="description" content="Drop-in serializer support for Express/Connect Node apps.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,800,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="styles.css">
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+        <![endif]-->
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <header>
+          <h1 class='project-name'>
+            <a href=''>blackburn</a>
+          </h1>
+          <p class='project-description'>Drop-in serializer support for Express/Connect Node apps.</p>
+        
+          <nav>
+        
+            <!-- Project Repo Link -->
+              <a href='https://github.com/davewasmer/blackburn' class='nav-link repo-link'>View on Github (davewasmer/blackburn)</a>
+        
+            <!-- Pages -->
+              <div class='page-nav'>
+                <h4 class='nav-header'>Documentation</h4>
+                  <!-- Page -->
+                  <a href='' class='nav-link page-link'>Adapters</a>
+                  <!-- Page -->
+                  <a href='' class='nav-link page-link'></a>
+                  <!-- Page -->
+                  <a href='' class='nav-link page-link'>Serializers</a>
+              </div>
+        
+            <!-- API -->
+              <div class='api-nav'>
+                <h4 class='nav-header'>API Reference</h4>
+                  <!-- Module -->
+                  <a href='api/lib/adapter.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>Adapter</span>
+                    <span class='api-nav-module-file'>lib/adapter.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/adapters/raw.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>Raw Adapter</span>
+                    <span class='api-nav-module-file'>lib/adapters/raw.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/index.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>blackburn</span>
+                    <span class='api-nav-module-file'>lib/index.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/serializer.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>Serializer</span>
+                    <span class='api-nav-module-file'>lib/serializer.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/serializers/flat.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>FlatSerializer</span>
+                    <span class='api-nav-module-file'>lib/serializers/flat.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/serializers/jsonapi.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>JSONAPISerializer</span>
+                    <span class='api-nav-module-file'>lib/serializers/jsonapi.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/serializers/root.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>RootSerializer</span>
+                    <span class='api-nav-module-file'>lib/serializers/root.js</span>
+                  </a>
+              </div>
+          </nav>
+        </header>
+        <div class='container'>
+          <h1 class='file-name'>
+            Serializer
+            <small class='file-path'>
+              Defined in
+              <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js'>lib/serializer.js</a>
+            </small>
+          </h1>
+
+
+
+            <p class='method-description'><p>Serializers allow you to customize what data is returned the response, and
+apply simple transformations to it. They allow you to decouple what data is
+sent, with how that data is structured / rendered.</p></p>
+
+
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L16'>lib/serializer.js, Line 16</a>
+                </div>
+                <h3 class='method-name'>
+                  render
+                  <span class='arguments'>
+                    (<span class='argument'>payload</span><span class='argument'>options</span>)
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>Take the supplied payload of record(s) or error(s) and the supplied options
+and return a rendered a JSON response object.</p></p>
+
+
+              <h4>Arguments</h4>
+              <ul class='arguments'>
+                  <li class='argument'>
+                    <span class='argument-name'>payload</span>
+                    <span class='argument-types'>(Array.&lt;Object&gt;,Array.&lt;Error&gt;,Object,Error): </span>
+                    <span class='argument-description'></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>options</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>options.adapter</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'><p>the adapter to use when interrogating                                   the payload models</p></span>
+                  </li>
+              </ul>
+              <h4>Returns</h4>
+              <div class='return'>
+                <span class='return-types'>(Object)</span>
+                <span class='return-description'><p>the JSON response object</p></span>
+              </div>
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L34'>lib/serializer.js, Line 34</a>
+                </div>
+                <h3 class='method-name'>
+                  attributes
+                  <span class='arguments'>
+                    ()
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>The list of attribute names that should be serialized. Attributes not
+included in this list will be omitted from the final rendered payload.</p></p>
+
+
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L42'>lib/serializer.js, Line 42</a>
+                </div>
+                <h3 class='method-name'>
+                  relationships
+                  <span class='arguments'>
+                    ()
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>An object with configuration on how to serialize relationships.
+Relationships that have no configuration present are omitted from the final
+rendered payload.</p><p>Out of the box, two options are supported:</p><p><strong>strategy</strong></p><p>It has one of four possible values:</p><ul>
+<li><code>records</code>: embed all related records (1-n relationships)</li>
+<li><code>record</code>: embed the related record (1-1 relationships)</li>
+<li><code>ids</code>: include only the ids of related records (1-n relationships)</li>
+<li><code>id</code>: include only the id of the related record (1-1 relationships)</li>
+</ul>
+<p>What the embedded records or ids look like is up to each serializer to
+determine.</p><p><strong>type</strong></p><p>The model type of the related records.</p><p>Specific serializers may also accept additional options in the relationship
+configuration to customize their response format.</p></p>
+
+
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L72'>lib/serializer.js, Line 72</a>
+                </div>
+                <h3 class='method-name'>
+                  serializeAttributes
+                  <span class='arguments'>
+                    (<span class='argument'>record</span><span class='argument'>options</span>)
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>The base Serializer class comes with a few methods defined that take
+advantage of some basic assumptions. <code>serializeAttributes</code> is one of them.
+You don&#39;t actually have to use these methods at all, but most types of
+serializers will find them helpful.</p><p><code>serializeAttributes</code> takes a record, and return the attributes that should
+be rendered. Note that attributes are distinct from relationships. This can
+serialization customized in several ways:</p><ul>
+<li>The attributes array on the serializer will act as a whitelist - only
+those attributes will be serialzed.</li>
+<li>You can override the way keys and values are serialized by defining
+your own .serializeAttributeName() and/or .serializeAttributeValue()
+methods.</li>
+</ul>
+</p>
+
+
+              <h4>Arguments</h4>
+              <ul class='arguments'>
+                  <li class='argument'>
+                    <span class='argument-name'>record</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'><p>a model containing attributes to be                                     serialized</p></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>options</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'></span>
+                  </li>
+              </ul>
+              <h4>Returns</h4>
+              <div class='return'>
+                <span class='return-types'>(Object)</span>
+                <span class='return-description'><p>an object with serialized attributes                                     from the supplied record</p></span>
+              </div>
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L110'>lib/serializer.js, Line 110</a>
+                </div>
+                <h3 class='method-name'>
+                  serializeAttributeName
+                  <span class='arguments'>
+                    (<span class='argument'>attributeName</span>)
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>Take an attribute name and return the serialized key name. Useful for
+transforming or renaming attributes in the rendered payload, i.e.
+transforming snake_case to camelCase keys, or vice versa.</p><p>The default implementation returns the attribute name unchanged.</p></p>
+
+
+              <h4>Arguments</h4>
+              <ul class='arguments'>
+                  <li class='argument'>
+                    <span class='argument-name'>attributeName</span>
+                    <span class='argument-types'>(String): </span>
+                    <span class='argument-description'></span>
+                  </li>
+              </ul>
+              <h4>Returns</h4>
+              <div class='return'>
+                <span class='return-types'>(String)</span>
+                <span class='return-description'><p>the key that should be used for this                                       attribute name</p></span>
+              </div>
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L128'>lib/serializer.js, Line 128</a>
+                </div>
+                <h3 class='method-name'>
+                  serializeAttributeValue
+                  <span class='arguments'>
+                    (<span class='argument'>value</span><span class='argument'>key</span><span class='argument'>record</span>)
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>Take an attribute value and return the serialized value. Useful for
+changing how certain types of values are serialized, i.e. Date objects.</p><p>The default implementation returns the attribute&#39;s value unchanged.</p></p>
+
+
+              <h4>Arguments</h4>
+              <ul class='arguments'>
+                  <li class='argument'>
+                    <span class='argument-name'>value</span>
+                    <span class='argument-types'>(): </span>
+                    <span class='argument-description'></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>key</span>
+                    <span class='argument-types'>(String): </span>
+                    <span class='argument-description'></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>record</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'></span>
+                  </li>
+              </ul>
+              <h4>Returns</h4>
+              <div class='return'>
+                <span class='return-types'>()</span>
+                <span class='return-description'><p>the value that should be rendered</p></span>
+              </div>
+
+
+            <p class='method-description'><p>, key, record</p></p>
+
+
+
+              <div class='context'>
+                <div class='defined-in'>
+                  Defined in <a href='https://github.com/davewasmer/blackburn/blob/master/lib/serializer.js#L146'>lib/serializer.js, Line 146</a>
+                </div>
+                <h3 class='method-name'>
+                  serializeRelationships
+                  <span class='arguments'>
+                    (<span class='argument'>record</span><span class='argument'>options</span>)
+                  </span>
+                </h3>
+              </div>
+
+            <p class='method-description'><p>The base Serializer class comes with a few methods defined that take
+advantage of some basic assumptions. <code>serializeRelationships</code> is one of
+them. You don&#39;t actually have to use these methods at all, but most types
+of serializers will find them helpful.</p><p><code>serializeRelationships</code> takes a record and returns an object whose keys
+are the relationship names, and values are relationship descriptors
+containing the following information about the relationship:</p><ul>
+<li><code>config</code> - the config supplied in the relationships object (see
+{@link Serializer#relationships})</li>
+<li><code>data</code> - contains any data that the adapter was able to return.</li>
+</ul>
+<p>It only returns relationships that have relationship config present,
+similar to how <code>serializeAttributes()</code> only returns attributes present in
+the <code>Serializer.attributes</code> whitelist.</p><p>You can tweak this serialization process by overriding either
+<code>.serializeRelationshipName()</code> or <code>.serializeRelationshipValue()</code>.</p></p>
+
+
+              <h4>Arguments</h4>
+              <ul class='arguments'>
+                  <li class='argument'>
+                    <span class='argument-name'>record</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'><p>the record to extract relationships                                        from</p></span>
+                  </li>
+                  <li class='argument'>
+                    <span class='argument-name'>options</span>
+                    <span class='argument-types'>(Object): </span>
+                    <span class='argument-description'></span>
+                  </li>
+              </ul>
+              <h4>Returns</h4>
+              <div class='return'>
+                <span class='return-types'>(Object)</span>
+                <span class='return-description'><p>the serialized relationships</p></span>
+              </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
+</html>
