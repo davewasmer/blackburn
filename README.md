@@ -1,6 +1,6 @@
 # blackburn [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
-Drop-in serializer support for Express/Connect Node apps..
+Drop-in, ORM agnostic serializer support for Express/Connect Node apps.
 
 
 ## Install
@@ -12,24 +12,50 @@ $ npm install --save blackburn
 
 ## Usage
 
-The simplest form of blackburn takes no options, and will use defaults as well as attempt to autodetect the right configuration settings.
+Blackburn hooks into your app as an Express/Connect middleware. To use it, you
+need to supply two things: an adapter, and serializers. Here's a simple example:
 
 ```js
+// app.js
 import blackburn from 'blackburn';
 import express from 'express';
 
 let app = express();
-app.use(blackburn());
+app.use(blackburn({
+  adapter: new blackburn.RawAdapter()
+}));
 
 app.get('/', function(req, res, next) {
   res.render(Post.find(1));
 });
+
+// serializers/books.js
+import FlatSerializer from 'blackburn';
+
+export default FlatSerializer.extend({
+  attributes: [ 'title', 'description' ]
+});
 ```
 
-`res.render()` accepts two arguments:
+This sets up blackburn to use the `raw` adapter and supplies it with a `books` serializer (more on adapters and serializers below).
+
+Blackburn overrides `res.render()` by default (although this is customizable). It accepts two arguments:
 
 1. `payload` - the data you want to respond with. It can also be a promise which resolves with the intended payload.
 2. `options` - allows you to pass options through to the renderer. For example, the JSON-API renderer accepts an `included` option to add sideloaded records to the response.
+
+You can customize the name of blackburn's render method by passing in the "renderMethodName" option:
+
+```js
+app.use(blackburn({
+  // ...
+  renderMethodName: "renderJSON"
+}));
+
+app.get('/', function(req, res, next) {
+  res.renderJSON(/*...*/);
+});
+```
 
 ### Options
 
@@ -37,26 +63,24 @@ The blackburn middleware constructor takes several options, show below with thei
 
 ```js
 blackburn({
-  renderer: 'raw' // 'raw', 'root', 'jsonapi', or a custom Renderer instance
-  adapter: // autodetect if not supplied. Can be any supported ORM name (i.e. 'mongoose') or a custom Adapter instance
-  serializers: './serializers' // relative path to directory containing serializers, or an object whose keys are model types and values are the corresponding Serializer instances
+  adapter: // Required. Must be an instance of blackburn.Adapter. Specific to your ORM (i.e. the MongooseAdapter).
+  serializers: './serializers' // relative path to directory containing serializers, or an object whose keys are model types and values are the corresponding Serializer instances, i.e. { "books": BookSerializer }
   renderMethodKey: 'render' // the name of the method to attach to the response object. By default, will override the standard Express res.render
 })
 ```
 
-
 ## Concepts
 
-The goal of blackburn is to give your middleware code a consistent interface to render a JSON response with being concerned about the details of how that response is structured.
+The goal of blackburn is to give your middleware code a consistent interface to render a JSON response without being concerned about the details of how that response is structured. This lets you separate the presentation of your responses from the work of building them.
 
-There are three main concepts you'll deal with:
+There are two main concepts you'll deal with:
 
-* **Renderers** represent the different output structures and formats. For example, the JSONAPI renderer will send JSONAPI 1.0 compliant responses.
-* **Adapters** allow blackburn to understand your ORM (or lack thereof). Because blackburn isn't tied to a specific ORM, it needs to know how to ask your models what type they are, what their relationships are, etc.
-* **Serializers** tell blackburn what data should be sent in a response (i.e. whitelisting attributes to be included), as well as allow for basic renaming transformations (i.e. underscored_keys to camelCased).
+* **Adapters** allow blackburn to understand your ORM (or lack thereof - see the RawAdapter). Because blackburn isn't tied to a specific ORM, it needs to know how to ask your models what type they are, what their relationships are, etc.
+* **Serializers** represent the different output structures and formats. For example, the JSONAPI serializer will send JSONAPI 1.0 compliant responses. Serializers can also let you customize the response, i.e. whitelisting attributes to be included or renaming underscored_keys to camelCased).
 
-For each of these concepts, you'll either choose a pre-built, bundled class (i.e. the `JSONAPIRenderer`, the `MongooseAdapter`), or supply your own custom instance that extends from the base class (i.e. `MyCustomORMAdapter`).
+For adapters, you'll typically either choose a pre-built, bundled class (i.e. the `MongooseAdapter` if you are using Mongoose), or supply your own if your ORM isn't supported out of the box.
 
+For serializers, you'll typically choose a format for your API (i.e. flat JSON, JSONAPI 1.0, etc) and choose a base serializer for that format (i.e. the `JSONAPISerializer`). Then each model type will extend from that base serializer and customize which of its attributes and relationships are sent over the wire (i.e. BooksSerializer extends JSONAPISerializer).
 
 ## Serializers
 
@@ -64,13 +88,13 @@ Serializers allow you to customize what data is returned the response, and apply
 
 ### Serializing attributes
 
-By default, serializers must whitelist all attributes that will be sent back with the response:
+By default, you must define a whitelist of all attributes that will be sent back with the response:
 
 ```js
 // serializers/user.js
-import { Serializer } from 'blackburn';
+import { FlatSerializer } from 'blackburn';
 
-export default Serializer.extend({
+export default FlatSerializer.extend({
   attributes: [
     'first_name',
     'last_name',
@@ -94,7 +118,7 @@ export default Serializer.extend({
     'published_city'
   ],
 
-  // keyForAttribute lets you rename attributes
+  // keyForAttribute lets you rename attribute names when they are converted to payload keys
   keyForAttribute(attributeName) {
     // In this case, we convert underscored_keys to camelCasedKeys
     return camelCase(attributeName);
@@ -104,27 +128,40 @@ export default Serializer.extend({
 
 ### Serializing relationships
 
-You can also customize how related data is serialized with your records:
+You can also customize how related data is serialized with your records. Serializing relationships is typically much more complex than basic attributes, so you can provide your own config for each relationship to decide how it is serialized.
+
+Only three options are supported by all the built-in serializers: `type` (required), `strategy` (required), and `serializer` (optional):
 
 ```js
 // serializers/book.js
-import { Serializer } from 'blackburn';
+import { FlatSerializer } from 'blackburn';
 
-export default Serializer.extend({
-
-  // ...
+export default FlatSerializer.extend({
 
   relationships: {
-    // Send only the ids for the related record(s)
-    'author': 'ids',
-    // Send the entire related records (when supplied / present)
-    'author': 'records',
-    // Don't send any part of the related records. For some renderers, this
-    // means the relationship won't be present at all in the response. For
-    // others, like the JSON-API renderer, it might still send the links for
-    // this relationship.
-    'author': false
+    author: {
+      // The type of the related record
+      type: 'users',
+      // Send only the id of the author, not the entire author record. Other
+      // possible strategies include 'ids', 'record', and 'records'. The last
+      // two send the entire related record(s) with the response.
+      strategy: 'id',
+      // If you want to customize how a related record is serialized, different
+      // from it's standard serializer, you can supply a serializer for only
+      // this relationship
+      serializer: BookAuthorSerializer
+    }
   }
+});
+```
+
+Similar to attributes, you can also perform basic transformations to the relationship and it's properties:
+
+```js
+// serializers/book.js
+import { FlatSerializer } from 'blackburn';
+
+export default FlatSerializer.extend({
 
   // keyForRelationship lets you rename relationships
   keyForRelationship(relationshipName) {
@@ -135,85 +172,55 @@ export default Serializer.extend({
 });
 ```
 
+Finally, some serializers may provide more options for serializing relationships. For example, the JSONAPI serializer supports adding relationship links to the payload:
+
+```js
+// serializers/book.js
+import { JSONAPISerializer } from 'blackburn';
+
+export default JSONAPISerializer.extend({
+
+  relationships: {
+    author: {
+      type: 'users',
+      strategy: 'id',
+      relationshipLink: '/books/{id}/relationships/author',
+      relatedLink: '/books/{id}/author'
+    }
+  }
+});
+```
+
+See the documentation for each serializer for available options.
 
 ## Adapter
 
-Adapters let the renderer interrogate your payloads to understand what data was passed in. Adapters must implement a few required methods, and some optional ones to support more complex renderers like the JSON-API renderer.
+Adapters let the blackburn "speak the same language" as your models, regardless of what ORM you are using. If blackburn doesn't have a built-in adapter for your ORM yet, fear not - they are relatively simple to implement: just 4 methods.
 
-The minimum interface that all adapters must implement:
+The interface that an adapter must implement:
 
 ```js
 let CustomAdapter = blackburn.Adapter.extend({
-  typeForRecord(record) {
+  typeForRecord(record, options) {
     // return the type of the record, i.e. 'books'
   },
-  idForRecord(record) {
+  idForRecord(record, options) {
     // return the type of the record, i.e. "507f1f77bcf86cd799439011"
   },
-  attributesForRecord(record) {
-    // return the attributes for the record, i.e.
-    // {
-    //   title: 'Human Action',
-    //   published: 1949
-    // }
+  attributesFromRecord(record, attributeName, options) {
+    // return the attribute requested from the record, i.e.:
+    // attributesFromRecord({ title: 'foo' }, 'title', options) => 'foo'
   },
-  relationshipsForRecord(record) {
-    // return the relationships for the record as a object:
-    // {
-    //   'author': {          <-- name of the relationship
-    //     type: 'person'       <-- model type
-    //     kind: 'hasMany'      <-- or belongsTo for 1-1 relationships
-    //     records: {} or []    <-- an object (for 1-1 relationships) or array
-    //                              (1-n, n-n relationships) of the related
-    //                              records (optional)
-    //     ids:                 <-- the id or array of ids of the related
-    //                              records (optional)
-    //   }
-    // }
+  relationshipFromRecord(record, name, config, options) {
+    // return whatever data is specified in the config for the relationship;
+    // i.e.
+    //
+    // relationshipFromRecord({ author_id: 1 }, 'author', { strategy: 'id' }, options) => 1
   }
 });
 ```
 
-Other methods that may be required by more complex renderers:
-
-```js
-let CustomAdapter = blackburn.Adapter.extend({
-
-  // ...
-
-  linksForRecord(record) {
-    // return the links for a record:
-    // {
-    //   'self': 'http://example.com/' + this.typeForRecord(record) + '/' + this.idForRecord(record)
-    // }
-  },
-
-  metaForRecord(record) {
-    // return the meta for the record, i.e. { copyright: 'Dave Wasmer 2015' }
-  }
-
-});
-```
-
-
-## Renderer
-
-Renderers are fairly straightforward. They must implement a single method, `render()`, which takes two arguments:
-
-```js
-let CustomRenderer = blackburn.Renderer.extend({
-  render(payload, options) {
-    // payload and options come directly from the res.render(payload, options)
-    // call in your own code. If payload was a promise when passed in, it will
-    // be the resolved (or rejected) value of that promise by this point
-  }
-})
-```
-
-The built-in renderers (`raw`, `root`, and `jsonapi`) break up the single `render()` call into multiple smaller helper methods, making it easier to override and customize their implementation without re-implementing the entire class.
-
-
-
+That's it! Notice that each method accepts a final argument that is an `options` hash. This is the options hash you pass into `res.render(payload, options)` from your route handler, so if you need to customize functionality beyond what blackburn allows, that's an easy "escape valve" to handle that.
 
 ## License
 
