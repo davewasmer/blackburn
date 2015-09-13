@@ -1,7 +1,8 @@
 # blackburn [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
-Drop-in, ORM agnostic serializer support for Express/Connect Node apps.
+[ALPHA] Drop-in, ORM agnostic serializer support for Express/Connect Node apps.
 
+> **Note:** this is alpha software, and still undergoing changes. Contributions welcome, consumers beware :wink:
 
 ## Install
 
