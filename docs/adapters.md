@@ -14,7 +14,7 @@ let CustomAdapter = blackburn.Adapter.extend({
   idForRecord(record, options) {
     // return the type of the record, i.e. "507f1f77bcf86cd799439011"
   },
-  attributesFromRecord(record, attributeName, options) {
+  attributeFromRecord(record, attributeName, options) {
     // return the attribute requested from the record, i.e.:
     // attributesFromRecord({ title: 'foo' }, 'title', options) => 'foo'
   },
