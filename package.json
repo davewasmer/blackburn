@@ -1,6 +1,6 @@
 {
   "name": "blackburn",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Drop-in serializer support for Express/Connect Node apps.",
   "homepage": "https://github.com/davewasmer/blackburn",
   "repository": "davewasmer/blackburn",
