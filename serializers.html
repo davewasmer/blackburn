@@ -37,11 +37,11 @@
               <div class='page-nav'>
                 <h4 class='nav-header'>Documentation</h4>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'>Adapters</a>
+                    <a href='adapters' class='nav-link page-link'>Adapters</a>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'></a>
+                    <a href='index' class='nav-link page-link'></a>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'>Serializers</a>
+                    <a href='serializers' class='nav-link page-link'>Serializers</a>
               </div>
         
             <!-- API -->
@@ -51,6 +51,11 @@
                   <a href='api/lib/adapter.js' class='nav-link api-link'>
                     <span class='api-nav-module-name'>Adapter</span>
                     <span class='api-nav-module-file'>lib/adapter.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/adapters/mongoose.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>Mongoose Adapter</span>
+                    <span class='api-nav-module-file'>lib/adapters/mongoose.js</span>
                   </a>
                   <!-- Module -->
                   <a href='api/lib/adapters/raw.js' class='nav-link api-link'>
@@ -86,9 +91,11 @@
           </nav>
         </header>
         <div class='container'>
-          <h2>Serializers</h2>
-<p>Serializers allow you to customize what data is returned the response, and apply simple transformations to it.</p><h3>Serializing attributes</h3>
-<p>By default, you must define a whitelist of all attributes that will be sent back with the response:</p><pre><code class="lang-js"><span class="hljs-comment">// serializers/user.js</span>
+          <h2 id="serializers">Serializers</h2>
+<p>Serializers allow you to customize what data is returned the response, and apply simple transformations to it.</p>
+<h3 id="serializing-attributes">Serializing attributes</h3>
+<p>By default, you must define a whitelist of all attributes that will be sent back with the response:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// serializers/user.js</span>
 <span class="hljs-keyword">import</span> { FlatSerializer } <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> FlatSerializer.extend({
@@ -99,7 +106,9 @@
   ]
 });
 </code></pre>
-<p>If your User model also includes an <code>hashed_password</code> field, then the serializer above would strip that from the response. One of the benefits here is that the UserSerializer will run whenever a user is serialized, <em>even if it&#39;s a related record</em>. This way, you don&#39;t need to remember to strip the <code>hashed_password</code> on every possible route in your app.</p><p>You can also customize how the data from your records is serialized, and apply basic transformations to it:</p><pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
+<p>If your User model also includes an <code>hashed_password</code> field, then the serializer above would strip that from the response. One of the benefits here is that the UserSerializer will run whenever a user is serialized, <em>even if it&#39;s a related record</em>. This way, you don&#39;t need to remember to strip the <code>hashed_password</code> on every possible route in your app.</p>
+<p>You can also customize how the data from your records is serialized, and apply basic transformations to it:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
 <span class="hljs-keyword">import</span> { Serializer } <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Serializer.extend({
@@ -116,8 +125,10 @@
   }
 });
 </code></pre>
-<h3>Serializing relationships</h3>
-<p>You can also customize how related data is serialized with your records. Serializing relationships is typically much more complex than basic attributes, so you can provide your own config for each relationship to decide how it is serialized.</p><p>Only three options are supported by all the built-in serializers: <code>type</code> (required), <code>strategy</code> (required), and <code>serializer</code> (optional):</p><pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
+<h3 id="serializing-relationships">Serializing relationships</h3>
+<p>You can also customize how related data is serialized with your records. Serializing relationships is typically much more complex than basic attributes, so you can provide your own config for each relationship to decide how it is serialized.</p>
+<p>Only three options are supported by all the built-in serializers: <code>type</code> (required), <code>strategy</code> (required), and <code>serializer</code> (optional):</p>
+<pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
 <span class="hljs-keyword">import</span> { FlatSerializer } <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> FlatSerializer.extend({
@@ -138,7 +149,8 @@
   }
 });
 </code></pre>
-<p>Similar to attributes, you can also perform basic transformations to the relationship and it&#39;s properties:</p><pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
+<p>Similar to attributes, you can also perform basic transformations to the relationship and it&#39;s properties:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
 <span class="hljs-keyword">import</span> { FlatSerializer } <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> FlatSerializer.extend({
@@ -151,7 +163,8 @@
 
 });
 </code></pre>
-<p>Finally, some serializers may provide more options for serializing relationships. For example, the JSONAPI serializer supports adding relationship links to the payload:</p><pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
+<p>Finally, some serializers may provide more options for serializing relationships. For example, the JSONAPI serializer supports adding relationship links to the payload:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// serializers/book.js</span>
 <span class="hljs-keyword">import</span> { JSONAPISerializer } <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> JSONAPISerializer.extend({
@@ -167,6 +180,7 @@
 });
 </code></pre>
 <p>See the documentation for each serializer for available options.</p>
+
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

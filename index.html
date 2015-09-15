@@ -22,6 +22,37 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <div class='hero'>
+          <div class='hero-container'>
+            <div class='project'>
+              <h1 class='project-name'>blackburn</h1>
+              <p class='description'>Drop-in serializer support for Express/Connect Node apps.</p>
+              <div class='links'>
+                <a href='https://github.com/davewasmer/blackburn/' title='davewasmer/blackburn'>Github Repo</a>
+              </div>
+            </div>
+            <div class='example light'>
+              <pre><code class="lang-js">app.use(blackburn({
+  adapter: <span class="hljs-keyword">new</span> blackburn.MongooseAdapter()
+  serializers: {
+    books: blackburn.JSONAPISerializer.extend({
+      attributes: [ <span class="hljs-string">'title'</span> ],
+      relationships: {
+        author: { strategy: <span class="hljs-string">'record'</span>, type: <span class="hljs-string">'users'</span> }
+      }
+    })
+  }
+}));
+
+app.get(<span class="hljs-string">'/books'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>{
+  res.render(BookModel.find().limit(<span class="hljs-number">10</span>));
+});
+</code></pre>
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
         <header>
           <h1 class='project-name'>
             <a href=''>blackburn</a>
@@ -37,11 +68,11 @@
               <div class='page-nav'>
                 <h4 class='nav-header'>Documentation</h4>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'>Adapters</a>
+                    <a href='adapters' class='nav-link page-link'>Adapters</a>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'></a>
+                    <a href='index' class='nav-link page-link'></a>
                   <!-- Page -->
-                  <a href='' class='nav-link page-link'>Serializers</a>
+                    <a href='serializers' class='nav-link page-link'>Serializers</a>
               </div>
         
             <!-- API -->
@@ -51,6 +82,11 @@
                   <a href='api/lib/adapter.js' class='nav-link api-link'>
                     <span class='api-nav-module-name'>Adapter</span>
                     <span class='api-nav-module-file'>lib/adapter.js</span>
+                  </a>
+                  <!-- Module -->
+                  <a href='api/lib/adapters/mongoose.js' class='nav-link api-link'>
+                    <span class='api-nav-module-name'>Mongoose Adapter</span>
+                    <span class='api-nav-module-file'>lib/adapters/mongoose.js</span>
                   </a>
                   <!-- Module -->
                   <a href='api/lib/adapters/raw.js' class='nav-link api-link'>
@@ -86,33 +122,52 @@
           </nav>
         </header>
         <div class='container'>
-          <h2>Usage</h2>
-<p>Blackburn hooks into your app as an Express/Connect middleware. To use it, you
-need to supply two things: an adapter, and serializers. Here&#39;s a simple example:</p><pre><code class="lang-js"><span class="hljs-comment">// app.js</span>
+          <h2 id="concepts">Concepts</h2>
+<p>The goal of Blackburn is to give your application code a consistent interface to render a JSON response without being concerned about the details of how that response is structured. This lets you separate the presentation of your responses from the work of building them.</p>
+<p>There are two main concepts you&#39;ll deal with:</p>
+<ul>
+<li><p><strong>Adapters</strong> allow blackburn to understand your ORM (or lack thereof - see the RawAdapter). Because blackburn isn&#39;t tied to a specific ORM, it needs to know how to ask your models what type they are, what their relationships are, etc. Adapters provide this ability.</p>
+</li>
+<li><p><strong>Serializers</strong> represent the different output structures and formats. For example, the JSONAPI serializer will send JSONAPI 1.0 compliant responses. Serializers can also let you customize the response, i.e. whitelisting attributes to be included or renaming underscored_keys to camelCased).</p>
+</li>
+</ul>
+<p>For adapters, you&#39;ll typically either choose a pre-built, bundled class (i.e. the <code>MongooseAdapter</code> if you are using Mongoose), or supply your own if your ORM isn&#39;t supported out of the box (don&#39;t worry, they are easy to implement!).</p>
+<p>For serializers, you&#39;ll typically choose a base serializer class based on the format you want for your API (i.e. flat objects, JSONAPI 1.0, etc). Each model should extend from that base serializer and customize which of its attributes and relationships are sent over the wire (i.e. BooksSerializer extends JSONAPISerializer).</p>
+<h2 id="usage">Usage</h2>
+<p>Blackburn hooks into your app as an middleware. To use it, you need to supply two things: an adapter, and serializers. Here&#39;s a simple example:</p>
+<pre><code class="lang-js"><span class="hljs-comment">// app.js</span>
 <span class="hljs-keyword">import</span> blackburn <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 <span class="hljs-keyword">import</span> express <span class="hljs-keyword">from</span> <span class="hljs-string">'express'</span>;
 
 <span class="hljs-keyword">let</span> app = express();
 app.use(blackburn({
+  <span class="hljs-comment">// Tell blackburn to use the RawAdapter to inspect payloads</span>
   adapter: <span class="hljs-keyword">new</span> blackburn.RawAdapter()
 }));
 
 app.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req, res, next</span>) </span>{
+  <span class="hljs-comment">// res.render() accepts a Promise, and will render the resolved</span>
+  <span class="hljs-comment">// value (or the rejection Error).</span>
   res.render(Post.find(<span class="hljs-number">1</span>));
 });
 
 <span class="hljs-comment">// serializers/books.js</span>
 <span class="hljs-keyword">import</span> FlatSerializer <span class="hljs-keyword">from</span> <span class="hljs-string">'blackburn'</span>;
 
+<span class="hljs-comment">// The FlatSerializer will render Book models as flat JSON</span>
+<span class="hljs-comment">// objects or arrays</span>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> FlatSerializer.extend({
   attributes: [ <span class="hljs-string">'title'</span>, <span class="hljs-string">'description'</span> ]
 });
 </code></pre>
-<p>This sets up blackburn to use the <code>raw</code> adapter and supplies it with a <code>books</code> serializer (more on adapters and serializers below).</p><p>Blackburn overrides <code>res.render()</code> by default (although this is customizable). It accepts two arguments:</p><ol>
-<li><code>payload</code> - the data you want to respond with. It can also be a promise which resolves with the intended payload.</li>
+<p>In this example, blackburn will use the <code>RawAdapter</code> to interrogate models that you pass into <code>res.render()</code>, and it will render the models using the <code>FlatSerializer</code>.</p>
+<p>Blackburn overrides <code>res.render()</code> by default (although this is customizable). It accepts two arguments:</p>
+<ol>
+<li><code>payload</code> - the data you want to send in the response. It can also be a promise which resolves with the intended payload.</li>
 <li><code>options</code> - allows you to pass options through to the renderer. For example, the JSON-API renderer accepts an <code>included</code> option to add sideloaded records to the response.</li>
 </ol>
-<p>You can customize the name of blackburn&#39;s render method by passing in the &quot;renderMethodName&quot; option:</p><pre><code class="lang-js">app.use(blackburn({
+<p>You can customize the name of blackburn&#39;s render method by passing in the &quot;renderMethodName&quot; option:</p>
+<pre><code class="lang-js">app.use(blackburn({
   <span class="hljs-comment">// ...</span>
   renderMethodName: <span class="hljs-string">"renderJSON"</span>
 }));
@@ -121,19 +176,15 @@ app.get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span 
   res.renderJSON(<span class="hljs-comment">/*...*/</span>);
 });
 </code></pre>
-<h3>Options</h3>
-<p>The blackburn middleware constructor takes several options, show below with their default values:</p><pre><code class="lang-js">blackburn({
+<h3 id="options">Options</h3>
+<p>The blackburn middleware constructor takes several options, show below with their default values:</p>
+<pre><code class="lang-js">blackburn({
   adapter: <span class="hljs-comment">// Required. Must be an instance of blackburn.Adapter. Specific to your ORM (i.e. the MongooseAdapter).</span>
   serializers: <span class="hljs-string">'./serializers'</span> <span class="hljs-comment">// relative path to directory containing serializers, or an object whose keys are model types and values are the corresponding Serializer instances, i.e. { "books": BookSerializer }</span>
   renderMethodKey: <span class="hljs-string">'render'</span> <span class="hljs-comment">// the name of the method to attach to the response object. By default, will override the standard Express res.render</span>
 })
 </code></pre>
-<h2>Concepts</h2>
-<p>The goal of blackburn is to give your middleware code a consistent interface to render a JSON response without being concerned about the details of how that response is structured. This lets you separate the presentation of your responses from the work of building them.</p><p>There are two main concepts you&#39;ll deal with:</p><ul>
-<li><strong>Adapters</strong> allow blackburn to understand your ORM (or lack thereof - see the RawAdapter). Because blackburn isn&#39;t tied to a specific ORM, it needs to know how to ask your models what type they are, what their relationships are, etc.</li>
-<li><strong>Serializers</strong> represent the different output structures and formats. For example, the JSONAPI serializer will send JSONAPI 1.0 compliant responses. Serializers can also let you customize the response, i.e. whitelisting attributes to be included or renaming underscored_keys to camelCased).</li>
-</ul>
-<p>For adapters, you&#39;ll typically either choose a pre-built, bundled class (i.e. the <code>MongooseAdapter</code> if you are using Mongoose), or supply your own if your ORM isn&#39;t supported out of the box.</p><p>For serializers, you&#39;ll typically choose a format for your API (i.e. flat JSON, JSONAPI 1.0, etc) and choose a base serializer for that format (i.e. the <code>JSONAPISerializer</code>). Then each model type will extend from that base serializer and customize which of its attributes and relationships are sent over the wire (i.e. BooksSerializer extends JSONAPISerializer).</p>
+
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

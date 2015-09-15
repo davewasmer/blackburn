@@ -438,6 +438,214 @@ th {
 .xml .hljs-cdata {
   opacity: 0.5; }
 
+/**
+ * GitHub Gist Theme
+ * Author : Louis Barranqueiro - https://github.com/LouisBarranqueiro
+ */
+.light code {
+  color: #454750; }
+
+.light .hljs {
+  display: block;
+  background: white;
+  padding: 0.5em;
+  color: #333333;
+  overflow-x: auto;
+  -webkit-text-size-adjust: none; }
+
+.light .hljs-comment,
+.light .bash .hljs-shebang,
+.light .java .hljs-javadoc,
+.light .javascript .hljs-javadoc,
+.light .rust .hljs-preprocessor {
+  color: #969896; }
+
+.light .hljs-string,
+.light .apache .hljs-sqbracket,
+.light .coffeescript .hljs-subst,
+.light .coffeescript .hljs-regexp,
+.light .cpp .hljs-preprocessor,
+.light .c .hljs-preprocessor,
+.light .javascript .hljs-regexp,
+.light .json .hljs-attribute,
+.light .makefile .hljs-variable,
+.light .markdown .hljs-value,
+.light .markdown .hljs-link_label,
+.light .markdown .hljs-strong,
+.light .markdown .hljs-emphasis,
+.light .markdown .hljs-blockquote,
+.light .nginx .hljs-regexp,
+.light .nginx .hljs-number,
+.light .objectivec .hljs-preprocessor .hljs-title,
+.light .perl .hljs-regexp,
+.light .php .hljs-regexp,
+.light .xml .hljs-value,
+.light .less .hljs-built_in,
+.light .scss .hljs-built_in {
+  color: #df5000; }
+
+.light .hljs-keyword,
+.light .css .hljs-at_rule,
+.light .css .hljs-important,
+.light .http .hljs-request,
+.light .ini .hljs-setting,
+.light .haskell .hljs-type,
+.light .java .hljs-javadoctag,
+.light .javascript .hljs-tag,
+.light .javascript .hljs-javadoctag,
+.light .nginx .hljs-title,
+.light .objectivec .hljs-preprocessor,
+.light .php .hljs-phpdoc,
+.light .sql .hljs-built_in,
+.light .less .hljs-tag,
+.light .less .hljs-at_rule,
+.light .scss .hljs-tag,
+.light .scss .hljs-at_rule,
+.light .scss .hljs-important,
+.light .stylus .hljs-at_rule,
+.light .go .hljs-typename,
+.light .swift .hljs-preprocessor {
+  color: #a71d5d; }
+
+.light .apache .hljs-common,
+.light .apache .hljs-cbracket,
+.light .apache .hljs-keyword,
+.light .bash .hljs-literal,
+.light .bash .hljs-built_in,
+.light .coffeescript .hljs-literal,
+.light .coffeescript .hljs-built_in,
+.light .coffeescript .hljs-number,
+.light .cpp .hljs-number,
+.light .cpp .hljs-built_in,
+.light .c .hljs-number,
+.light .c .hljs-built_in,
+.light .cs .hljs-number,
+.light .cs .hljs-built_in,
+.light .css .hljs-attribute,
+.light .css .hljs-hexcolor,
+.light .css .hljs-number,
+.light .css .hljs-function,
+.light .haskell .hljs-number,
+.light .http .hljs-literal,
+.light .http .hljs-attribute,
+.light .java .hljs-number,
+.light .javascript .hljs-built_in,
+.light .javascript .hljs-literal,
+.light .javascript .hljs-number,
+.light .json .hljs-number,
+.light .makefile .hljs-keyword,
+.light .markdown .hljs-link_reference,
+.light .nginx .hljs-built_in,
+.light .objectivec .hljs-literal,
+.light .objectivec .hljs-number,
+.light .objectivec .hljs-built_in,
+.light .php .hljs-literal,
+.light .php .hljs-number,
+.light .python .hljs-number,
+.light .ruby .hljs-prompt,
+.light .ruby .hljs-constant,
+.light .ruby .hljs-number,
+.light .ruby .hljs-subst .hljs-keyword,
+.light .ruby .hljs-symbol,
+.light .rust .hljs-number,
+.light .sql .hljs-number,
+.light .puppet .hljs-function,
+.light .less .hljs-number,
+.light .less .hljs-hexcolor,
+.light .less .hljs-function,
+.light .less .hljs-attribute,
+.light .scss .hljs-preprocessor,
+.light .scss .hljs-number,
+.light .scss .hljs-hexcolor,
+.light .scss .hljs-function,
+.light .scss .hljs-attribute,
+.light .stylus .hljs-number,
+.light .stylus .hljs-hexcolor,
+.light .stylus .hljs-attribute,
+.light .stylus .hljs-params,
+.light .go .hljs-built_in,
+.light .go .hljs-constant,
+.light .swift .hljs-built_in,
+.light .swift .hljs-number {
+  color: #0086b3; }
+
+.light .apache .hljs-tag,
+.light .cs .hljs-xmlDocTag,
+.light .css .hljs-tag,
+.light .xml .hljs-title,
+.light .stylus .hljs-tag {
+  color: #63a35c; }
+
+.light .bash .hljs-variable,
+.light .cs .hljs-preprocessor,
+.light .cs .hljs-preprocessor .hljs-keyword,
+.light .css .hljs-attr_selector,
+.light .css .hljs-value,
+.light .ini .hljs-value,
+.light .ini .hljs-keyword,
+.light .javascript .hljs-tag .hljs-title,
+.light .makefile .hljs-constant,
+.light .nginx .hljs-variable,
+.light .xml .hljs-tag,
+.light .scss .hljs-variable {
+  color: #333333; }
+
+.light .bash .hljs-title,
+.light .coffeescript .hljs-title,
+.light .cpp .hljs-title,
+.light .c .hljs-title,
+.light .cs .hljs-title,
+.light .css .hljs-id,
+.light .css .hljs-class,
+.light .css .hljs-pseudo,
+.light .ini .hljs-title,
+.light .haskell .hljs-title,
+.light .haskell .hljs-pragma,
+.light .java .hljs-title,
+.light .javascript .hljs-title,
+.light .makefile .hljs-title,
+.light .objectivec .hljs-title,
+.light .perl .hljs-sub,
+.light .php .hljs-title,
+.light .python .hljs-decorator,
+.light .python .hljs-title,
+.light .ruby .hljs-parent,
+.light .ruby .hljs-title,
+.light .rust .hljs-title,
+.light .xml .hljs-attribute,
+.light .puppet .hljs-title,
+.light .less .hljs-id,
+.light .less .hljs-pseudo,
+.light .less .hljs-class,
+.light .scss .hljs-id,
+.light .scss .hljs-pseudo,
+.light .scss .hljs-class,
+.light .stylus .hljs-class,
+.light .stylus .hljs-id,
+.light .stylus .hljs-pseudo,
+.light .stylus .hljs-title,
+.light .swift .hljs-title,
+.light .diff .hljs-chunk {
+  color: #795da3; }
+
+.light .coffeescript .hljs-reserved,
+.light .coffeescript .hljs-attribute {
+  color: #1d3e81; }
+
+.light .diff .hljs-chunk {
+  font-weight: bold; }
+
+.light .diff .hljs-addition {
+  color: #55a532;
+  background-color: #eaffea; }
+
+.light .diff .hljs-deletion {
+  color: #bd2c00;
+  background-color: #ffecec; }
+
+.light .markdown .hljs-link_url {
+  text-decoration: underline; }
+
 * {
   box-sizing: border-box; }
 
@@ -451,13 +659,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Raleway';
   font-weight: 800; }
 
+a {
+  color: #7884EA; }
+
 header {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
+  display: inline-block;
   width: 22rem;
-  padding: 3rem; }
+  padding: 3rem;
+  vertical-align: top; }
   header .project-name a {
     color: inherit;
     text-decoration: none; }
@@ -482,12 +691,16 @@ header {
     text-decoration: none; }
   header .api-nav-module-file {
     font-family: "Inconsolata", "Monaco", "Anonymous", monospace;
-    opacity: 0.5; }
+    opacity: 0.5;
+    display: block;
+    font-weight: 400; }
 
 .container {
-  max-width: 40rem;
+  display: inline-block;
+  vertical-align: top;
+  width: 40rem;
+  margin-top: 2rem;
   margin-bottom: 5rem;
-  margin-left: 22rem;
   padding: 2rem; }
 
 pre {
@@ -512,6 +725,57 @@ blockquote {
   padding: 0.1em 1.2em;
   border-radius: 2px;
   background-color: #ededff; }
+
+.hero {
+  position: relative;
+  height: 80vh;
+  max-height: 40rem;
+  min-height: 30rem;
+  padding: 2rem;
+  background-color: #eef8f7;
+  background-repeat: no-repeat;
+  background-image: url(images/hero-bg.png), -webkit-linear-gradient(320deg, #E2E7FB, #B1FFDE);
+  background-image: url(images/hero-bg.png), linear-gradient(130deg, #E2E7FB, #B1FFDE);
+  background-size: cover; }
+  .hero::after {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 1em;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    content: ''; }
+
+.hero-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+      -ms-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+  max-width: 70rem;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center; }
+  .hero-container .project, .hero-container .example {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left; }
+  .hero-container .project {
+    width: 40%;
+    padding: 3rem; }
+  .hero-container .example {
+    width: 55%; }
+  .hero-container .example pre {
+    background-color: transparent;
+    margin: 0 auto; }
+  .hero-container .links {
+    font-weight: bold; }
+
+.homepage-container {
+  width: 40rem;
+  margin: 2rem auto 8rem; }
 
 .file-path {
   display: block;
