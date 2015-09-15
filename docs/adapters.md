@@ -1,5 +1,6 @@
 ---
 title: Adapters
+url: adapters
 ---
 
 ## Adapters
