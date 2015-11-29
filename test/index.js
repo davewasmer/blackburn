@@ -1,6 +1,6 @@
 import expect from 'must';
 import blackburn from '../lib';
-import noop from 'lodash-node/modern/utility/noop';
+import noop from 'lodash/utility/noop';
 
 before(function() {
   this.cwd = process.cwd();
