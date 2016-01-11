@@ -48,7 +48,7 @@ describe('FlatSerializer', function() {
 
   describe('relationships', function() {
 
-    it('should throw when an ids strategy is used but no ids are supplied', function() {
+    it('should throw when an "ids" strategy is used but no ids are supplied', function() {
       let serializer = createSerializer({
         relationships: {
           books: { strategy: 'ids' }
@@ -63,7 +63,7 @@ describe('FlatSerializer', function() {
       }).to.throw();
     });
 
-    it('should throw when an id strategy is used but no id is supplied', function() {
+    it('should throw when an "id" strategy is used but no id is supplied', function() {
       let serializer = createSerializer({
         relationships: {
           author: { strategy: 'id' }
@@ -94,7 +94,7 @@ describe('FlatSerializer', function() {
       }).to.throw();
     });
 
-    it('should throw when an records strategy is used but no records are supplied', function() {
+    it('should throw when an "records" strategy is used but no records are supplied', function() {
       let serializer = createSerializer({
         relationships: {
           books: { strategy: 'records' }
@@ -109,7 +109,7 @@ describe('FlatSerializer', function() {
       }).to.throw();
     });
 
-    it('should render an ids strategy as an embedded array of ids when supplied with just ids', function() {
+    it('should render an "ids" strategy as an embedded array of ids when supplied with just ids', function() {
       let serializer = createSerializer({
         relationships: {
           books: { strategy: 'ids' }
@@ -130,7 +130,7 @@ describe('FlatSerializer', function() {
       expect(payload.books).to.eql([ 1, 2 ]);
     });
 
-    it('should render an id strategy as an embedded id when supplied with just the id', function() {
+    it('should render an "id" strategy as an embedded id when supplied with just the id', function() {
       let serializer = createSerializer({
         relationships: {
           author: { strategy: 'id' }
@@ -152,7 +152,7 @@ describe('FlatSerializer', function() {
     });
     /*eslint-enable camelcase*/
 
-    it('should render a records strategy as an embedded array', function() {
+    it('should render a "records" strategy as an embedded array', function() {
       let serializer = createSerializer({
         relationships: {
           books: { strategy: 'records' }
@@ -176,7 +176,7 @@ describe('FlatSerializer', function() {
       expect(payload.books).to.eql(record.books);
     });
 
-    it('should render a record strategy as an embedded object', function() {
+    it('should render a "record" strategy as an embedded object', function() {
       let serializer = createSerializer({
         relationships: {
           author: { strategy: 'record' }
